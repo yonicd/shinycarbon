@@ -1,0 +1,19 @@
+Package: shinycarbon
+Title: shinycarbon
+Version: 0.0.0.9000
+Authors@R: person('Jonathan', 'Sidi', email = 'yonicd@gmail.com', role = c('cre', 'aut'))
+Description: Shinyapp for tweeting carbonate outputs.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    shiny,
+    golem,
+    processx,
+    attempt,
+    DT,
+    glue,
+    htmltools
+RoxygenNote: 6.1.0
+Suggests: 
+    testthat
