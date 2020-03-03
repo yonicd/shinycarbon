@@ -55,13 +55,20 @@ app_ui <- function() {
                    )
             )
             ),
-          shiny::fillRow(
+          shiny::fillRow(flex = c(2,1),
             column(width = 12,
                    shiny::hr(),
-                   shiny::h2('Images'),
-                   shiny::fileInput("local", NULL, accept = c("image/png")
-                   ),
-                   slickR::slickROutput('carbons'))
+                   shiny::h2('Images Preview'),
+                   slickR::slickROutput('carbons')),
+            column(width = 12,
+                   shiny::hr(),
+                   shiny::h2('Add Local Files'),
+                   shiny::fileInput(
+                     inputId = "local",
+                     label =  NULL, 
+                     multiple = TRUE,
+                     accept = c("image/png")
+                   ))
           )
         )
         

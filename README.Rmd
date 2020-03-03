@@ -8,7 +8,6 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
   out.width = "100%"
 )
 ```
@@ -19,37 +18,58 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-The goal of shinycarbon is to ...
+The goal of `shinycarbon` is to create a shiny wrapper to make it easy to share {carbonate} images on twitter.
 
 ## Installation
 
-You can install the released version of shinycarbon from [CRAN](https://CRAN.R-project.org) with:
+You can install using: 
 
-``` r
-install.packages("shinycarbon")
+```r
+remotes::install_github("yonicd/shinycarbon")
 ```
 
-## Example
+## Loading the App
 
-This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r example,eval=FALSE}
 library(shinycarbon)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+There are two ways to load the app
 
-```{r cars}
-summary(cars)
+Command line
+
+```{r, eval=FALSE}
+shinycarbon::run_app()
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+Addin
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r,echo=FALSE}
+knitr::include_graphics('inst/addin.png')
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+## Preloading Script
+
+If you are in RStudio you can pre-load the app with script by highlighting text and running the addin.
+
+## Layout
+
+The basic app layout is pretty straight forward:
+
+  - Top right is a `shinyAce` editor to put in the code you want to send to `carbon.js` using the button above it.
+  - Bottom right is where the images come out to preview them in a `slickR` carousel.
+    - Remember only 4 images per tweet, more images will automatically be converted into a gif
+  - Bottom left is a button to import images from you local machine into the carousel
+    - Handy for capture screen and what not...
+  - Top left is where you construct your tweet for `rtweet`.
+    - The app uses the System Variable 'TWITTER_SCREEN_NAME' as the tweeting handle.
+    - You can reply to tweet by inserting the tweet id into the 'enter reply status id' field
+    - Write your post into the text area, don't worry about handles for a reply that is taken care for you under the hood.
+    - Your character count is shown above the text area for convenience. If there are reply handles that are added the character count will take them into account.
+
+Here is a screenshot:
+
+```{r,echo=FALSE}
+knitr::include_graphics('inst/app.png')
+```

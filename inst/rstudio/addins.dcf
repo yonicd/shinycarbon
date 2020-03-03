@@ -1,0 +1,4 @@
+Name: shinycarbon
+Description: Shiny App for Carbonate
+Binding: shinycarbon_addin
+Interactive: true
