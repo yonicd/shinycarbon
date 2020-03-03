@@ -53,8 +53,8 @@ The basic app layout is pretty straight forward:
     `slickR` carousel.
       - Remember only 4 images per tweet, more images will automatically
         be converted into a gif
-  - Bottom right is a button to import images from you local machine into
-    the carousel
+  - Bottom right is a button to import images from you local machine
+    into the carousel
       - Handy for capture screen and what not…
   - Top right is where you construct your tweet for `rtweet`.
       - The app uses the System Variable ‘TWITTER\_SCREEN\_NAME’ as the

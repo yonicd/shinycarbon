@@ -57,12 +57,12 @@ If you are in RStudio you can pre-load the app with script by highlighting text 
 
 The basic app layout is pretty straight forward:
 
-  - Top right is a `shinyAce` editor to put in the code you want to send to `carbon.js` using the button above it.
-  - Bottom right is where the images come out to preview them in a `slickR` carousel.
+  - Top left is a `shinyAce` editor to put in the code you want to send to `carbon.js` using the button above it.
+  - Bottom left is where the images come out to preview them in a `slickR` carousel.
     - Remember only 4 images per tweet, more images will automatically be converted into a gif
-  - Bottom left is a button to import images from you local machine into the carousel
+  - Bottom right is a button to import images from you local machine into the carousel
     - Handy for capture screen and what not...
-  - Top left is where you construct your tweet for `rtweet`.
+  - Top right is where you construct your tweet for `rtweet`.
     - The app uses the System Variable 'TWITTER_SCREEN_NAME' as the tweeting handle.
     - You can reply to tweet by inserting the tweet id into the 'enter reply status id' field
     - Write your post into the text area, don't worry about handles for a reply that is taken care for you under the hood.
