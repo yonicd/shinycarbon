@@ -6,14 +6,7 @@ Description: Shinyapp for tweeting carbonate outputs.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: 
-    shiny,
-    golem,
-    processx,
-    attempt,
-    DT,
-    glue,
-    htmltools
-RoxygenNote: 6.1.0
-Suggests: 
-    testthat
+Imports: shiny,slickR,glue,rtweet,miniUI,shinyAce,rstudioapi,golem,htmltools,
+ rmarkdown,markdown,carbonate
+RoxygenNote: 7.0.2
+Suggests: testthat

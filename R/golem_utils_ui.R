@@ -36,19 +36,18 @@ named_to_li <- function(list, class = NULL){
   if(is.null(class)){
     res <- mapply(
       function(x, y){
-        tags$li(HTML(glue("<b>{y}:</b> {x}")))
+        htmltools::tags$li(htmltools::HTML(glue::glue("<b>{y}:</b> {x}")))
       },
       list, names(list), SIMPLIFY = FALSE)
-    #res <- lapply(res, HTML)
-    tagList(res)
+    htmltools::tagList(res)
   } else {
     res <- mapply(
       function(x, y){
-        tags$li(HTML(glue("<b>{y}:</b> {x}")))
+        htmltools::tags$li(htmltools::HTML(glue("<b>{y}:</b> {x}")))
       },
       list, names(list), SIMPLIFY = FALSE)
-    res <- lapply(res, function(x) tagAppendAttributes(x, class = class))
-    tagList(res)
+    res <- lapply(res, function(x) htmltools::tagAppendAttributes(x, class = class))
+    htmltools::tagList(res)
   }
 }
 
@@ -121,7 +120,7 @@ jq_hide <- function(id) {
 #' @importFrom htmltools tags HTML
 with_red_star <- function(text) {
   htmltools::tags$span(
-    HTML(
+    htmltools::HTML(
       paste0(
         text,
         htmltools::tags$span(
@@ -146,7 +145,7 @@ with_red_star <- function(text) {
 #
 #' @importFrom htmltools HTML
 rep_br <- function(times = 1) {
-  HTML(rep("<br/>", times = times))
+  htmltools::HTML(rep("<br/>", times = times))
 }
 
 # Create an url
@@ -160,7 +159,7 @@ rep_br <- function(times = 1) {
 # @examples
 # enurl("https://www.thinkr.fr", "ThinkR")
 enurl <- function(url, text){
-  tags$a(href = url, text)
+  htmltools::tags$a(href = url, text)
 }
 
 # Columns wrappers
@@ -177,43 +176,43 @@ col_12 <- function(...){
 
 #' @importFrom shiny column
 col_10 <- function(...){
-  column(10, ...)
+  shiny::column(10, ...)
 }
 
 #' @importFrom shiny column
 col_8 <- function(...){
-  column(8, ...)
+  shiny::column(8, ...)
 }
 
 #' @importFrom shiny column
 col_6 <- function(...){
-  column(6, ...)
+  shiny::column(6, ...)
 }
 
 #' @importFrom shiny column
 col_4 <- function(...){
-  column(4, ...)
+  shiny::column(4, ...)
 }
 
 #' @importFrom shiny column
 col_3 <- function(...){
-  column(3, ...)
+  shiny::column(3, ...)
 }
 
 #' @importFrom shiny column
 col_2 <- function(...){
-  column(2, ...)
+  shiny::column(2, ...)
 }
 
 #' @importFrom shiny column
 col_1 <- function(...){
-  column(1, ...)
+  shiny::column(1, ...)
 }
 
 #' Include Content From a File
 #' 
 #' Load rendered RMarkdown from a file and turn into HTML.
-#' 
+#' @param path character, path where rmd is located
 #' @rdname includeRMarkdown
 #' @export
 #' 
@@ -236,5 +235,5 @@ includeRMarkdown <- function(path){
   
   Encoding(html) <- "UTF-8"
   
-  return(HTML(html))
+  return(htmltools::HTML(html))
 }

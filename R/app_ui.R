@@ -1,12 +1,72 @@
-#' @import shiny
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname app_ui
+#' @export 
+#' @importFrom miniUI miniPage gadgetTitleBar miniContentPanel
+#' @importFrom shiny fillRow h2 actionButton hr fileInput textInput uiOutput textAreaInput
+#' @importFrom shinyAce aceEditor
+#' @importFrom rstudioapi getSourceEditorContext
+#' @importFrom slickR slickROutput
 app_ui <- function() {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # List the first level UI elements here 
-    fluidPage(
-      h1("shinycarbon")
-    )
+    miniUI::miniPage(
+      miniUI::gadgetTitleBar("Carbonate Shiny App"),
+      
+      miniUI::miniContentPanel(
+        
+        shiny::fillRow(
+          fillCol(
+            column(width = 12,
+                   shiny::h2('Script'),
+                   shiny::actionButton(inputId = 'get',label = 'Fetch from carbon.js'),
+                   shiny::hr(),
+                   shinyAce::aceEditor(
+                     height = '300px',
+                     outputId = "myEditor",
+                     wordWrap = TRUE,
+                     value = rstudioapi::getSourceEditorContext()$selection[[1]]$text,
+                     mode = "r",
+                     theme = "ambiance",
+                     placeholder = 'Enter Code Here ...',
+                     fontSize = 10
+                   )
+            )),
+          fillCol(
+            column(width = 12,
+                   shiny::h2('Images'),
+                   shiny::fileInput("local", NULL, accept = c("image/png")
+                   ),
+                   shiny::hr(),
+                   slickR::slickROutput('carbons'))
+          ),
+          fillCol(
+            column(12,
+                   shiny::h2('Twitter'),
+                   shiny::actionButton(inputId = 'post',label = 'Post to Twitter'),
+                   shiny::hr(),
+                   shiny::textInput(inputId = 'reply_status_id',label = NULL,placeholder = 'Enter reply status id'),
+                   shiny::uiOutput('chars'),
+                   shiny::textAreaInput(
+                     inputId = 'status',
+                     label = sprintf('Tweet Status: Posting as @%s', 
+                                     Sys.getenv('TWITTER_SCREEN_NAME'))
+                   )
+            ))
+        )
+        
+      ))
   )
 }
 
