@@ -45,7 +45,7 @@ shinycarbon::run_app()
 
 Addin
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,out.width = "40%"}
 knitr::include_graphics('inst/addin.png')
 ```
 

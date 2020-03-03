@@ -1,12 +1,12 @@
 Package: shinycarbon
 Title: shinycarbon
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: person('Jonathan', 'Sidi', email = 'yonicd@gmail.com', role = c('cre', 'aut'))
 Description: Shinyapp for tweeting carbonate outputs.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: shiny,slickR,glue,rtweet,miniUI,shinyAce,rstudioapi,golem,htmltools,
- rmarkdown,markdown,carbonate
+ rmarkdown,markdown,carbonate,magick
 RoxygenNote: 7.0.2
 Suggests: testthat

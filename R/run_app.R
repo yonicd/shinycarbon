@@ -18,6 +18,10 @@
 #' @importFrom shiny shinyApp
 run_app <- function(...) {
   
+  on.exit({
+    unlink(file.path(tempdir(),'carbonshiny'),recursive = TRUE,force = TRUE)
+  },add = TRUE)
+  
   golem::with_golem_options(
     app = shiny::shinyApp(ui = app_ui, server = app_server), 
     golem_opts = list(...)

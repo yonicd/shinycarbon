@@ -36,7 +36,7 @@ shinycarbon::run_app()
 
 Addin
 
-<img src="inst/addin.png" width="100%" />
+<img src="inst/addin.png" width="40%" />
 
 ## Preloading Script
 
