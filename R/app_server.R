@@ -21,6 +21,9 @@ app_server <- function(input, output,session) {
 
   carb <- load_carbonate(td = file.path(tempdir(),'carbonshiny'))
   td <- carb$download_path
+
+  td_tweet <- file.path(tempdir(),'rtweet_media')
+  dir.create(td_tweet,showWarnings = FALSE)
   
   shiny::observeEvent(input$myEditor,{
     carb$code <- input$myEditor
@@ -30,14 +33,17 @@ app_server <- function(input, output,session) {
     
     output$carbons <- slickR::renderSlickR({
       
-      imgs <- list.files(td,full.names = TRUE)
+      imgs_carbon <- list.files(td,full.names = TRUE,pattern = '^img')
+      imgs_local <- list.files(td_tweet,full.names = TRUE,pattern = '^local')
+      
+      imgs <- c(imgs_carbon,imgs_local)
       opts <- slickR::settings(adaptiveHeight = TRUE)
       
       if(length(imgs)>1){
         opts <- slickR::settings(adaptiveHeight = TRUE, dots = TRUE)
       }
       
-      slickR::slickR(imgs,slideId = 'me') + opts
+      slickR::slickR(imgs,slideId = 'me',width = '80%') + opts
       
     })
     
@@ -45,9 +51,9 @@ app_server <- function(input, output,session) {
   
   observeEvent(input$local,{
     inFile <- input$local
-    idx <- length(list.files(td,pattern = '^local')) + 1
+    idx <- length(list.files(td_tweet,pattern = '^local')) + 1
     if(!is.null(inFile$datapath)){
-      file.copy(inFile$datapath,file.path(td,glue::glue('local_{idx}.png')))
+      file.copy(inFile$datapath,file.path(td_tweet,glue::glue('local_{idx}.png')))
     }
   })
   
@@ -94,14 +100,18 @@ app_server <- function(input, output,session) {
   #Close and Cleanup App
   
   shiny::observeEvent(input$cancel, {
-    carb$stop_all()
+    if(input$get>0)
+      carb$stop_all()
     unlink(td,recursive = TRUE,force = TRUE)
+    unlink(td_tweet,recursive = TRUE,force = TRUE)
     shiny::stopApp(invisible())
   })
   
   shiny::observeEvent(input$done, {
-    carb$stop_all()
+    if(input$get>0)
+      carb$stop_all()
     unlink(td,recursive = TRUE,force = TRUE)
+    unlink(td_tweet,recursive = TRUE,force = TRUE)
     shiny::stopApp(invisible())
   })
 }

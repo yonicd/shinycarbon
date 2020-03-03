@@ -26,32 +26,22 @@ app_ui <- function() {
       
       miniUI::miniContentPanel(
         
-        shiny::fillRow(
-          fillCol(
+        shiny::fillCol(flex = c(2,1),
+          shiny::fillRow(flex = c(2,1),
             column(width = 12,
                    shiny::h2('Script'),
-                   shiny::actionButton(inputId = 'get',label = 'Fetch from carbon.js'),
-                   shiny::hr(),
-                   shinyAce::aceEditor(
-                     height = '300px',
-                     outputId = "myEditor",
-                     wordWrap = TRUE,
-                     value = rstudioapi::getSourceEditorContext()$selection[[1]]$text,
-                     mode = "r",
-                     theme = "ambiance",
-                     placeholder = 'Enter Code Here ...',
-                     fontSize = 10
-                   )
-            )),
-          fillCol(
-            column(width = 12,
-                   shiny::h2('Images'),
-                   shiny::fileInput("local", NULL, accept = c("image/png")
-                   ),
-                   shiny::hr(),
-                   slickR::slickROutput('carbons'))
-          ),
-          fillCol(
+                  shiny::actionButton(inputId = 'get',label = 'Fetch from carbon.js'),
+                  shiny::hr(),
+                  shinyAce::aceEditor(
+                    height = '200px',
+                    outputId = "myEditor",
+                    wordWrap = TRUE,
+                    value = rstudioapi::getSourceEditorContext()$selection[[1]]$text,
+                    mode = "r",
+                    theme = "ambiance",
+                    placeholder = 'Enter Code Here ...',
+                    fontSize = 10
+                  )),
             column(12,
                    shiny::h2('Twitter'),
                    shiny::actionButton(inputId = 'post',label = 'Post to Twitter'),
@@ -63,7 +53,16 @@ app_ui <- function() {
                      label = sprintf('Tweet Status: Posting as @%s', 
                                      Sys.getenv('TWITTER_SCREEN_NAME'))
                    )
-            ))
+            )
+            ),
+          shiny::fillRow(
+            column(width = 12,
+                   shiny::hr(),
+                   shiny::h2('Images'),
+                   shiny::fileInput("local", NULL, accept = c("image/png")
+                   ),
+                   slickR::slickROutput('carbons'))
+          )
         )
         
       ))
