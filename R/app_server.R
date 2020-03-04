@@ -14,7 +14,7 @@
 #' @rdname app_server
 #' @export 
 #' @importFrom shiny observeEvent eventReactive renderUI h6 stopApp
-#' @importFrom slickR renderSlickR settings slickR
+#' @importFrom slickR renderSlickR settings slickR `%synch%`
 #' @importFrom glue glue
 #' @importFrom rtweet lookup_statuses
 #' @importFrom magick image_read
@@ -28,18 +28,20 @@ app_server <- function(input, output,session) {
   })
   
   shiny::observeEvent(c(input$local,input$get),{
-    
+
     output$carbons <- slickR::renderSlickR({
       
       imgs <- list.files(td,full.names = TRUE,pattern = '^(img|local)')
 
+      idx <- htmlwidgets::JS("function(slick,index) {return '<a>'+(index+1)+'</a>';}")
+      
       opts <- slickR::settings(adaptiveHeight = TRUE)
       
       if(length(imgs)>1){
-        opts <- slickR::settings(adaptiveHeight = TRUE, dots = TRUE)
+        opts <- slickR::settings(adaptiveHeight = TRUE, dots = TRUE, customPaging = idx)
       }
-      
-      slickR::slickR(imgs,slideId = 'me',width = '80%') + opts
+
+      slickR::slickR(imgs, slideId = 'up',width = '80%') + opts
       
     })
     
@@ -50,6 +52,19 @@ app_server <- function(input, output,session) {
     idx <- length(list.files(td,pattern = '^local')) + 1
     if(!is.null(inFile$datapath)){
       file.copy(inFile$datapath,file.path(td,glue::glue('local_{idx}.png')))
+      
+      shiny::updateSelectizeInput(
+        session = session,
+        label = 'select images to tweet',
+        inputId = 'tweet_imgs',
+        choices = list.files(td, pattern = '^(img|local)'),
+        selected = input$tweet_imgs,
+        options = list(
+          placeholder = 'Select Images to Tweet',
+          plugins = list('remove_button', 'drag_drop')
+        )
+      )
+      
     }
   })
   
@@ -58,6 +73,18 @@ app_server <- function(input, output,session) {
     ret <- carb$carbonate(
       file = glue::glue('img_{length(list.files(td)) + 1}.png'),
       path = td
+    )
+    
+    shiny::updateSelectizeInput(
+      session = session,
+      label = 'select images to tweet',
+      inputId = 'tweet_imgs',
+      choices = list.files(td, pattern = '^(img|local)'),
+      selected = input$tweet_imgs,
+      options = list(
+        placeholder = 'Select Images to Tweet',
+        plugins = list('remove_button', 'drag_drop')
+      )
     )
     
   })
@@ -94,10 +121,14 @@ app_server <- function(input, output,session) {
       carb$carbons <- append(carb$carbons, local_imgs)
       
     }
-      
-    media_format <- ifelse(length(carb$carbons)>4,'gif','png')
     
-    carb$rtweet(media = carb$carbons,
+    imgs <- carb$carbons
+    names(imgs) <- list.files(td, pattern = '^(img|local)')
+    imgs <- imgs[input$tweet_imgs]
+    
+    media_format <- ifelse(length(imgs)>4,'gif','png')
+
+    carb$rtweet(media = imgs,
                 media_format = media_format,
                 in_reply_to_status_id = input$reply_status_id)
     

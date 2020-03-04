@@ -13,8 +13,6 @@
 #' @export 
 #' @importFrom miniUI miniPage gadgetTitleBar miniContentPanel
 #' @importFrom shiny fillRow h2 actionButton hr fileInput textInput uiOutput textAreaInput
-#' @importFrom shinyAce aceEditor
-#' @importFrom rstudioapi getSourceEditorContext
 #' @importFrom slickR slickROutput
 app_ui <- function() {
   tagList(
@@ -32,16 +30,8 @@ app_ui <- function() {
                    shiny::h2('Script'),
                   shiny::actionButton(inputId = 'get',label = 'Fetch from carbon.js'),
                   shiny::hr(),
-                  shinyAce::aceEditor(
-                    height = '200px',
-                    outputId = "myEditor",
-                    wordWrap = TRUE,
-                    value = rstudioapi::getSourceEditorContext()$selection[[1]]$text,
-                    mode = "r",
-                    theme = "ambiance",
-                    placeholder = 'Enter Code Here ...',
-                    fontSize = 10
-                  )),
+                  build_ace()
+                  ),
             column(12,
                    shiny::h2('Twitter'),
                    shiny::actionButton(inputId = 'post',label = 'Post to Twitter'),
@@ -52,8 +42,18 @@ app_ui <- function() {
                      inputId = 'status',
                      label = sprintf('Tweet Status: Posting as @%s', 
                                      Sys.getenv('TWITTER_SCREEN_NAME'))
+                   ),
+                   shiny::selectizeInput(
+                     inputId = 'tweet_imgs',
+                     label = NULL,
+                     multiple = TRUE,
+                     choices = NULL,
+                     options = list(
+                       placeholder = 'No Images to Select',
+                       plugins = list('remove_button', 'drag_drop')
+                      )
+                     )
                    )
-            )
             ),
           shiny::fillRow(flex = c(2,1),
             column(width = 12,

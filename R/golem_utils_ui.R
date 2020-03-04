@@ -237,3 +237,24 @@ includeRMarkdown <- function(path){
   
   return(htmltools::HTML(html))
 }
+
+#' @importFrom rstudioapi getSourceEditorContext isAvailable
+#' @importFrom shinyAce aceEditor
+build_ace <- function(text = NULL){
+
+  if(rstudioapi::isAvailable()){
+    text <- rstudioapi::getSourceEditorContext()$selection[[1]]$text
+  }
+  
+  shinyAce::aceEditor(
+    height = '200px',
+    outputId = "myEditor",
+    wordWrap = TRUE,
+    value = text,
+    mode = "r",
+    theme = "ambiance",
+    placeholder = 'Enter Code Here ...',
+    fontSize = 10
+  )
+  
+}
